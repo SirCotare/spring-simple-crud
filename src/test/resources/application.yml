@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url:
+    username:
+    password:
+    hikari:
+      connection-timeout: 10000
+      max-lifetime: 30000
+      minimum-idle: 5
+      maximum-pool-size: 10
+      schema: public
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        ddl-auto: none
+        jdbc:
+          lob:
+            non-contextual-creation: true
+        default-schema: ${spring.datasource.hikari.schema}
+
+  test:
+    database:
+      replace: none
