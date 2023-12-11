@@ -1,5 +1,6 @@
 package net.larboard.lib.springsimplecrud;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -19,7 +20,8 @@ public class SimpleCrudManager {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public static SimpleCrudManager getInstance(@NonNull EntityManager entityManager, @NonNull ApplicationEventPublisher applicationEventPublisher) {
+    public static SimpleCrudManager getInstance(@NonNull EntityManager entityManager,
+                                                @NonNull ApplicationEventPublisher applicationEventPublisher) {
         if (instance == null) {
             synchronized (SimpleCrudManager.class) {
                 if (instance == null) {
@@ -84,8 +86,20 @@ public class SimpleCrudManager {
         }
 
         @org.springframework.lang.NonNull
+        public <P extends CrudParameter<T>> FindBy<T, ID> findBy(@NonNull String propertyName,
+                                                                 @Nullable Object value) {
+            return new FindBy<>(propertyName, value, simpleCrudManager, modelClazz);
+        }
+
+        @org.springframework.lang.NonNull
         public <P extends CrudParameter<T>> FindAll<T, ID> findAll() {
             return new FindAll<>(simpleCrudManager, modelClazz);
+        }
+
+        @org.springframework.lang.NonNull
+        public <P extends CrudParameter<T>> FindAllBy<T, ID> findAllBy(@NonNull String propertyName,
+                                                                       @Nullable Object value) {
+            return new FindAllBy<>(propertyName, value, simpleCrudManager, modelClazz);
         }
     }
 }
